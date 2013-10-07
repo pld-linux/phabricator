@@ -1,7 +1,7 @@
 Summary:	Phabricator, an open software engineering platform
 Name:		phabricator
 Version:	0.1
-Release:	0.1
+Release:	0.2
 License:	Apache v2.0
 Group:		Applications/WWW
 Source0:	https://github.com/facebook/%{name}/archive/master/phabricator.tar.gz
@@ -47,20 +47,23 @@ software companies build better software.
 %setup -qc -a1 -a2
 mv arcanist{-*,}
 mv libphutil{-*,}
-mv phabricator-*/{.??*,*} .
-rmdir phabricator-*
+mv phabricator{-*,}
 
 grep -rlE '/usr/local/bin|bin/env' . | xargs sed -i -e ' 1 {
 	s,/usr/local/bin/php,/usr/bin/php,
-	s,/usr/bin/env /usr/bin/php,/usr/bin/php,
+	s,/usr/bin/env .*php,/usr/bin/php,
 }'
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sysconfdir}
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir},%{php_data_dir}}
 
-cp -a . $RPM_BUILD_ROOT%{_appdir}
+cp -a arcanist $RPM_BUILD_ROOT%{php_data_dir}
+cp -a libphutil $RPM_BUILD_ROOT%{php_data_dir}
+
+cp -a phabricator/* $RPM_BUILD_ROOT%{_appdir}
+# in doc already
+%{__rm} $RPM_BUILD_ROOT%{_appdir}/{LICENSE,NOTICE,README}
 
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
 cp -p %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
@@ -89,9 +92,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README NOTICE
+%doc phabricator/{README,NOTICE}
 %dir %attr(750,root,http) %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/lighttpd.conf
-%{_appdir}
+%dir %{_appdir}
+%{_appdir}/bin
+%{_appdir}/conf
+%{_appdir}/externals
+%{_appdir}/resources
+%{_appdir}/scripts
+%{_appdir}/src
+%{_appdir}/support
+%{_appdir}/webroot
+
+%{php_data_dir}/arcanist
+%{php_data_dir}/libphutil
