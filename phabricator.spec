@@ -1,7 +1,7 @@
 Summary:	Phabricator, an open software engineering platform
 Name:		phabricator
 Version:	0.1
-Release:	0.3
+Release:	0.4
 License:	Apache v2.0
 Group:		Applications/WWW
 Source0:	https://github.com/facebook/%{name}/archive/master/phabricator.tar.gz
@@ -27,6 +27,7 @@ Requires:	webserver(alias)
 Requires:	webserver(indexfile)
 Requires:	webserver(php)
 Requires:	webserver(rewrite)
+Requires:	which
 Suggests:	git-core
 Suggests:	php(apc)
 Suggests:	php(gd)
