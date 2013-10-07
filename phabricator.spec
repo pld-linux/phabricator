@@ -29,9 +29,11 @@ Requires:	webserver(php)
 Requires:	webserver(rewrite)
 Requires:	which
 Suggests:	git-core
+Suggests:	mercurial
 Suggests:	php(apc)
 Suggests:	php(gd)
 Suggests:	php(xhprof)
+Suggests:	subversion
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
