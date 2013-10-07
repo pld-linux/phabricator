@@ -1,7 +1,7 @@
 Summary:	Phabricator, an open software engineering platform
 Name:		phabricator
 Version:	0.1
-Release:	0.2
+Release:	0.3
 License:	Apache v2.0
 Group:		Applications/WWW
 Source0:	https://github.com/facebook/%{name}/archive/master/phabricator.tar.gz
@@ -97,6 +97,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/lighttpd.conf
+
+# there's no easy way to control file execute bits, so use defattr
+%defattr(-,root,root,-)
+
 %dir %{_appdir}
 %{_appdir}/bin
 %{_appdir}/conf
