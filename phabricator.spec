@@ -1,13 +1,11 @@
 Summary:	Phabricator, an open software engineering platform
 Name:		phabricator
 Version:	0.1
-Release:	0.4
+Release:	0.5
 License:	Apache v2.0
 Group:		Applications/WWW
 Source0:	https://github.com/facebook/%{name}/archive/master/phabricator.tar.gz
 # Source0-md5:	9a886bfc5a077e152d9e9b59fcbd19fe
-Source1:	https://github.com/facebook/libphutil/archive/master/libphutil.tar.gz
-# Source1-md5:	276ec0faafabc48ca08ecab54e504b19
 Source2:	https://github.com/facebook/arcanist/archive/master/arcanist.tar.gz
 # Source2-md5:	22f65983592de3d919e3d356904577a9
 Source3:	apache.conf
@@ -20,6 +18,7 @@ Requires:	php(iconv)
 Requires:	php(mbstring)
 Requires:	php(mysqli)
 Requires:	php(pcntl)
+Requires:	php-libphutil
 Requires:	webapps
 Requires:	webserver
 Requires:	webserver(access)
@@ -47,9 +46,8 @@ Phabricator is a collection of open source web applications that help
 software companies build better software.
 
 %prep
-%setup -qc -a1 -a2
+%setup -qc -a2
 mv arcanist{-*,}
-mv libphutil{-*,}
 mv phabricator{-*,}
 
 grep -rlE '/usr/local/bin|bin/env' . | xargs sed -i -e ' 1 {
@@ -62,7 +60,6 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir},%{php_data_dir}}
 
 cp -a arcanist $RPM_BUILD_ROOT%{php_data_dir}
-cp -a libphutil $RPM_BUILD_ROOT%{php_data_dir}
 
 cp -a phabricator/* $RPM_BUILD_ROOT%{_appdir}
 # in doc already
@@ -115,4 +112,3 @@ rm -rf $RPM_BUILD_ROOT
 %{_appdir}/webroot
 
 %{php_data_dir}/arcanist
-%{php_data_dir}/libphutil
